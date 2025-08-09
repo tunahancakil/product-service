@@ -9,6 +9,8 @@ public class ProductDto {
     private Long id;
     private String name;
     private Double price;
+    private Integer quantity;
+    private Boolean active;
     private String category;
     private String subCategory;
     private List<ProductImageDto> images;

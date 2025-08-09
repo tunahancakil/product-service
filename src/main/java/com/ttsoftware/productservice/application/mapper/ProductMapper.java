@@ -1,4 +1,4 @@
-package com.ttsoftware.productservice.controller.mapper;
+package com.ttsoftware.productservice.application.mapper;
 
 import com.ttsoftware.productservice.model.dto.ProductDto;
 import com.ttsoftware.productservice.model.entity.Product;
@@ -11,5 +11,7 @@ import java.util.List;
 public interface ProductMapper {
     List<ProductDto> toProductDtoList(List<Product> products);
 
+    @Mapping(target = "category", source = "category.name")
+    @Mapping(target = "subCategory", source = "subCategory.name")
     ProductDto toProductDto(Product product);
 }

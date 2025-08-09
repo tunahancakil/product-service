@@ -1,7 +1,8 @@
-package com.ttsoftware.productservice.controller;
+package com.ttsoftware.productservice.application.controller;
 
+import com.ttsoftware.productservice.application.service.ProductService;
+import com.ttsoftware.productservice.infrastructure.response.ProductDeleteResponse;
 import com.ttsoftware.productservice.model.dto.ProductDto;
-import com.ttsoftware.productservice.model.entity.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +26,18 @@ public class ProductController {
     }
 
     @PostMapping(value = "/createProduct", produces = APPLICATION_JSON_VALUE)
-    public Product createProduct(@RequestBody ProductDto productDto) {
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
         return productService.createProduct(productDto);
     }
 
-//    @DeleteMapping(value = "/deleteProduct", produces = APPLICATION_JSON_VALUE)
-//    public ProductDeleteResponse deleteProduct(@RequestParam("id") Long id) {
-//        return productService.deleteProduct(id);
-//    }
+    @DeleteMapping(value = "/deleteProduct", produces = APPLICATION_JSON_VALUE)
+    public ProductDeleteResponse deleteProduct(@RequestParam("id") Long id) {
+        return productService.deleteProduct(id);
+    }
 
     @PutMapping(value = "/updateProduct")
-    public ResponseEntity<String> updateProduct(@RequestBody ProductDto courtDto) {
-        return productService.updateProduct(courtDto);
+    public ResponseEntity<String> updateProduct(@RequestBody ProductDto productDto) {
+        return productService.updateProduct(productDto);
     }
 
     @GetMapping(value = "/getAllProducts", produces = APPLICATION_JSON_VALUE)

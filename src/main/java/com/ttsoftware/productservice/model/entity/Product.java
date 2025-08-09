@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Where(clause = "is_deleted = 0")
 @Table(name = "PRODUCT", schema = "TOPTANCICEK")
-@SQLDelete(sql = "UPDATE court SET is_deleted = 1 WHERE id = ?", check = ResultCheckStyle.COUNT)
+@SQLDelete(sql = "UPDATE product SET is_deleted = 1 WHERE id = ?", check = ResultCheckStyle.COUNT)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,20 @@ public class Product {
 
     @Column(name = "PRICE")
     private Double price;
+
+    @Column(name = "QUANTITY")
+    private Integer quantity;
+
+    @Column(name = "ACTIVE")
+    private Boolean active;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CATEGORY_ID", nullable = false)
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SUB_CATEGORY_ID", nullable = false)
+    private SubCategory subCategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images;
