@@ -20,7 +20,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping(value = "/getProducttById", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getProductById", produces = APPLICATION_JSON_VALUE)
     public ProductDto getProductByID(@RequestParam("id") Long id) {
         return productService.getProductById(id);
     }
