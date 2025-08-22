@@ -1,9 +1,8 @@
-package com.ttsoftware.productservice.application.service;
+package com.ttsoftware.productservice.application.service.product;
 
 import com.ttsoftware.productservice.application.mapper.ProductMapper;
-import com.ttsoftware.productservice.infrastructure.response.ProductDeleteResponse;
-import com.ttsoftware.productservice.model.dto.ProductDto;
-import com.ttsoftware.productservice.model.dto.ProductImageDto;
+import com.ttsoftware.productservice.infrastructure.response.product.ProductDeleteResponse;
+import com.ttsoftware.productservice.model.dto.product.ProductDto;
 import com.ttsoftware.productservice.model.entity.Category;
 import com.ttsoftware.productservice.model.entity.Product;
 import com.ttsoftware.productservice.model.entity.ProductImage;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

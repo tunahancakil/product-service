@@ -1,4 +1,4 @@
-package com.ttsoftware.productservice.model.dto;
+package com.ttsoftware.productservice.model.dto.product;
 
 import lombok.Data;
 

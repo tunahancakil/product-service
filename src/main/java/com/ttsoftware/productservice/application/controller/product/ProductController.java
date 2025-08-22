@@ -1,8 +1,8 @@
-package com.ttsoftware.productservice.application.controller;
+package com.ttsoftware.productservice.application.controller.product;
 
-import com.ttsoftware.productservice.application.service.ProductService;
-import com.ttsoftware.productservice.infrastructure.response.ProductDeleteResponse;
-import com.ttsoftware.productservice.model.dto.ProductDto;
+import com.ttsoftware.productservice.application.service.product.ProductService;
+import com.ttsoftware.productservice.infrastructure.response.product.ProductDeleteResponse;
+import com.ttsoftware.productservice.model.dto.product.ProductDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

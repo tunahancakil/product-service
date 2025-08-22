@@ -1,6 +1,6 @@
 package com.ttsoftware.productservice.application.mapper;
 
-import com.ttsoftware.productservice.model.dto.ProductDto;
+import com.ttsoftware.productservice.model.dto.product.ProductDto;
 import com.ttsoftware.productservice.model.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
