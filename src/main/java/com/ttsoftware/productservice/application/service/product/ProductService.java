@@ -107,10 +107,10 @@ public class ProductService {
                 Product product = optionalProduct.get();
                 product.setActive(productDto.getActive());
                 product.setName(productDto.getName());
-                product.setDescription(product.getDescription());
                 product.setCategory(category);
                 product.setSubCategory(subCategory);
                 product.setQuantity(productDto.getQuantity());
+                product.setPrice(productDto.getPrice());
                 if (productDto.getImages() != null) {
                     productDto.getImages().forEach(imageDto -> {
                         if (imageDto.getId() == null) {
