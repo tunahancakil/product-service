@@ -111,7 +111,7 @@ public class ProductService {
                 product.setSubCategory(subCategory);
                 product.setQuantity(productDto.getQuantity());
                 product.setPrice(productDto.getPrice());
-                if (productDto.getImages() != null) {
+                if (productDto.getImages() != null && !productDto.getImages().isEmpty()) {
                     productDto.getImages().forEach(imageDto -> {
                         if (imageDto.getId() == null) {
                             ProductImage productImage = new ProductImage();
@@ -132,6 +132,8 @@ public class ProductService {
                             }
                         }
                     });
+                } else {
+                    productImageRepository.deleteProductImageByProduct(product);
                 }
                 productRepository.save(product);
                 return new ResponseEntity<>("Operation is done", HttpStatus.OK);
