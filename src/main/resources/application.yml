@@ -22,4 +22,4 @@ spring:
     change-log: classpath:db/changelog/test/changelog-master.yml
 
 server:
-  port: 8088
+  port: 8082

@@ -3,6 +3,7 @@ package com.ttsoftware.productservice.application.service.product;
 import com.ttsoftware.productservice.application.mapper.ProductMapper;
 import com.ttsoftware.productservice.infrastructure.response.product.ProductDeleteResponse;
 import com.ttsoftware.productservice.model.dto.product.ProductDto;
+import com.ttsoftware.productservice.model.dto.product.ProductImageDto;
 import com.ttsoftware.productservice.model.entity.Category;
 import com.ttsoftware.productservice.model.entity.Product;
 import com.ttsoftware.productservice.model.entity.ProductImage;
@@ -18,7 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -91,50 +95,63 @@ public class ProductService {
         return response;
     }
 
-    public ResponseEntity<String> updateProduct(ProductDto productDto) {
+    public ResponseEntity<String> updateProduct(ProductDto request) {
         try {
-            Optional<Product> optionalProduct = productRepository.findById(productDto.getId());
-            validateProductDto(productDto);
-            Category category = categoryRepository.findByName(productDto.getCategory());
+            Optional<Product> optionalProduct = productRepository.findById(request.getId());
+            validateProductDto(request);
+            Category category = categoryRepository.findByName(request.getCategory());
             if (category == null) {
-                throw new IllegalArgumentException("Category not found: " + productDto.getCategory());
+                throw new IllegalArgumentException("Category not found: " + request.getCategory());
             }
-            SubCategory subCategory = subCategoryRepository.findByName(productDto.getSubCategory());
+            SubCategory subCategory = subCategoryRepository.findByName(request.getSubCategory());
             if (subCategory == null) {
-                throw new IllegalArgumentException("SubCategory not found: " + productDto.getSubCategory());
+                throw new IllegalArgumentException("SubCategory not found: " + request.getSubCategory());
             }
             if (optionalProduct.isPresent()) {
                 Product product = optionalProduct.get();
-                product.setActive(productDto.getActive());
-                product.setName(productDto.getName());
+                product.setActive(request.getActive());
+                product.setName(request.getName());
                 product.setCategory(category);
                 product.setSubCategory(subCategory);
-                product.setQuantity(productDto.getQuantity());
-                product.setPrice(productDto.getPrice());
-                if (productDto.getImages() != null && !productDto.getImages().isEmpty()) {
-                    productDto.getImages().forEach(imageDto -> {
-                        if (imageDto.getId() == null) {
-                            ProductImage productImage = new ProductImage();
-                            productImage.setProduct(product);
-                            productImage.setImage(imageDto.getImage());
-                            productImage.setColor(imageDto.getColor());
-                            productImageRepository.save(productImage);
-                        } else {
-                            Optional<ProductImage> existingImage = productImageRepository.findById(imageDto.getId());
-                            if (existingImage.isPresent()) {
-                                ProductImage productImage = existingImage.get();
-                                productImage.setProduct(product);
-                                productImage.setImage(imageDto.getImage());
-                                productImage.setColor(imageDto.getColor());
-                                productImageRepository.save(productImage);
-                            } else {
-                                log.warn("Product image with ID {} not found", imageDto.getId());
-                            }
-                        }
-                    });
-                } else {
-                    productImageRepository.deleteProductImageByProduct(product);
+                product.setQuantity(request.getQuantity());
+                product.setPrice(request.getPrice());
+
+                List<ProductImageDto> requestImages = request.getImages();
+                List<ProductImage> existingImages = productImageRepository.findByProduct(product);
+
+                Map<Long, ProductImage> existingImageMap = existingImages.stream()
+                        .filter(img -> img.getId() != null)
+                        .collect(Collectors.toMap(ProductImage::getId, img -> img));
+
+                // Gelen request'te olmayan eski image'ları sil
+                for (ProductImage existing : existingImages) {
+                    boolean stillExists = requestImages != null && requestImages.stream()
+                            .anyMatch(reqImg -> reqImg.getId() != null && reqImg.getId().equals(existing.getId()));
+                    if (!stillExists) {
+                        productImageRepository.delete(existing);
+                    }
                 }
+
+                // Gelenleri ekle/güncelle
+                if (requestImages != null) {
+                    for (ProductImageDto reqImg : requestImages) {
+                        if (reqImg.getId() != null && existingImageMap.containsKey(reqImg.getId())) {
+                            // Güncelle
+                            ProductImage existing = existingImageMap.get(reqImg.getId());
+                            existing.setImage(reqImg.getImage());
+                            // Diğer alanlar varsa onları da güncelleyin
+                            productImageRepository.save(existing);
+                        } else {
+                            // Yeni ekle
+                            ProductImage productImage = new ProductImage();
+                            productImage.setColor(reqImg.getColor());
+                            productImage.setImage(reqImg.getImage());
+                            productImage.setProduct(product);
+                            productImageRepository.save(productImage);
+                        }
+                    }
+                }
+
                 productRepository.save(product);
                 return new ResponseEntity<>("Operation is done", HttpStatus.OK);
             } else {

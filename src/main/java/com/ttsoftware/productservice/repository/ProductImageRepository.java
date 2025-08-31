@@ -5,6 +5,7 @@ import com.ttsoftware.productservice.model.entity.ProductImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
     void deleteByProduct(Product product);
@@ -12,4 +13,5 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Long
     void deleteProductImageByProduct(Product product);
 
     List<ProductImage> findByProduct(Product product);
+
 }
