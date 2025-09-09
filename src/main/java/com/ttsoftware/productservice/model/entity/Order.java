@@ -46,6 +46,9 @@ public class Order {
     @Column(name = "IS_DELETED")
     private boolean deleted;
 
+    @Column(name = "ORDER_UUID")
+    private String orderUUID;
+
     @PrePersist
     protected void onCreate() {
         createdDate = LocalDateTime.now();

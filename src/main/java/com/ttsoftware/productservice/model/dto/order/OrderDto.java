@@ -15,4 +15,5 @@ public class OrderDto {
     private BigDecimal totalPrice;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
+    private String orderUUID;
 }

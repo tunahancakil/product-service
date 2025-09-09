@@ -30,10 +30,9 @@ public class OrderService {
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = new Order();
         validateOrderDto(orderDto);
-
         orderRepository.save(order);
 
-        Optional<Order> savedOrder  = orderRepository.findById(order.getId());
+        Optional<Order> savedOrder = orderRepository.findById(order.getId());
         return savedOrder.map(orderMapper::toOrderDto).orElse(null);
     }
 

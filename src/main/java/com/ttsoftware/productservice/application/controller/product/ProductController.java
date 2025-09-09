@@ -16,6 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/product")
 public class ProductController {
 
     private final ProductService productService;

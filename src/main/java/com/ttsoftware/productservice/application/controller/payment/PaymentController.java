@@ -15,6 +15,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/payment")
 public class PaymentController {
 
     private final PaymentService paymentService;
