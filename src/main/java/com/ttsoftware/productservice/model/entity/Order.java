@@ -1,5 +1,6 @@
 package com.ttsoftware.productservice.model.entity;
 
+import com.ttsoftware.productservice.model.enums.OrderStatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Generated;
@@ -32,7 +33,7 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @Column(name = "STATUS")
-    private String status; // e.g., NEW, PAID, SHIPPED
+    private OrderStatusEnum status;
 
     @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
