@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Where(clause = "is_deleted = 0")
 @Table(name = "ORDERS", schema = "TOPTANCICEK")
-@SQLDelete(sql = "UPDATE order SET is_deleted = 1 WHERE id = ?", check = ResultCheckStyle.COUNT)
+@SQLDelete(sql = "UPDATE orders SET is_deleted = 1 WHERE id = ?", check = ResultCheckStyle.COUNT)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,12 +47,13 @@ public class Order {
     @Column(name = "IS_DELETED")
     private boolean deleted;
 
-    @Column(name = "ORDER_UUID")
+    @Column(name = "ORDER_UUID", unique = true, nullable = false)
     private String orderUUID;
 
     @PrePersist
     protected void onCreate() {
         createdDate = LocalDateTime.now();
+        updatedDate = createdDate;
     }
 
     @PreUpdate

@@ -6,10 +6,14 @@ import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @Entity
+@NoArgsConstructor
+@Table(name = "USERS", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username"}),
+        @UniqueConstraint(columnNames = {"email"})
+})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -64,7 +68,6 @@ public class User {
     @Column(name = "IS_DELETED")
     private Integer isDeleted;
 
-    @PrePersist
     @Generated
     private void prePersist() {
         this.createdDate = LocalDateTime.now();

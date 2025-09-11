@@ -13,5 +13,8 @@ import java.util.List;
 public interface OrderMapper {
     List<OrderDto> toOrderDtoList(List<Order> orderList);
 
+    @Mapping(source = "user.id", target = "userId")
     OrderDto toOrderDto(Order order);
+
+    Order toOrder(OrderDto orderDto);
 }

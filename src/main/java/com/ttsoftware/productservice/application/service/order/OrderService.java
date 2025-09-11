@@ -3,14 +3,18 @@ package com.ttsoftware.productservice.application.service.order;
 import com.ttsoftware.productservice.application.mapper.OrderMapper;
 import com.ttsoftware.productservice.infrastructure.response.order.OrderDeleteResponse;
 import com.ttsoftware.productservice.model.dto.order.OrderDto;
+import com.ttsoftware.productservice.model.dto.order.OrderItemDto;
 import com.ttsoftware.productservice.model.entity.*;
 import com.ttsoftware.productservice.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +24,9 @@ import java.util.Optional;
 public class OrderService {
 
     private final OrderMapper orderMapper;
+    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
     public OrderDto getOrderById(Long id) {
         Optional<Order> order  = orderRepository.findById(id);
@@ -28,12 +34,45 @@ public class OrderService {
     }
 
     public OrderDto createOrder(OrderDto orderDto) {
-        Order order = new Order();
-        validateOrderDto(orderDto);
-        orderRepository.save(order);
+        try {
+            Optional<User> user = userRepository.findById(orderDto.getUserId());
+            if (user.isEmpty()) {
+                throw new EntityNotFoundException("User not found with id: " + orderDto.getUserId());
+            }
 
-        Optional<Order> savedOrder = orderRepository.findById(order.getId());
-        return savedOrder.map(orderMapper::toOrderDto).orElse(null);
+            Order order = new Order();
+            order.setUser(user.get());
+            order.setOrderUUID(orderDto.getOrderUUID());
+            order.setStatus(orderDto.getStatus());
+            order.setTotalPrice(orderDto.getTotalPrice());
+            order.setCreatedDate(LocalDateTime.now());
+            order.setUpdatedDate(LocalDateTime.now());
+
+            List<OrderItem> orderItemList = new ArrayList<>();
+            for (OrderItemDto orderItemDto : orderDto.getOrderItems()) {
+                if (orderItemDto.getProductId() != null) {
+                    Optional<Product> product = productRepository.findById(orderItemDto.getProductId());
+                    if (product.isEmpty()) {
+                        throw new EntityNotFoundException("Product not found with id: " + orderItemDto.getProductId());
+                    }
+                    OrderItem orderItem = new OrderItem();
+                    orderItem.setOrders(order);
+                    orderItem.setProduct(product.get());
+                    orderItem.setPrice(orderItemDto.getPrice());
+                    orderItem.setQuantity(orderItemDto.getQuantity());
+                    orderItemList.add(orderItem);
+                }
+            }
+            order.setOrderItems(orderItemList);
+
+            validateOrderDto(orderDto);
+            orderRepository.save(order);
+
+            return orderMapper.toOrderDto(order);
+        } catch (Exception e) {
+            log.error("Order creation has an error : {}", e.getMessage());
+            return null;
+        }
     }
 
     public OrderDeleteResponse deleteOrder(Long id) {
