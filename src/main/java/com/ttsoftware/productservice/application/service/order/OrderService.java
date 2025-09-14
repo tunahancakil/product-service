@@ -67,25 +67,25 @@ public class OrderService {
             order.setOrderItems(orderItemList);
 
             validateOrderDto(orderDto);
-            Order savedOrder = orderRepository.save(order);
-            response.setOrderUUID(savedOrder.getOrderUUID());
-            response.setStatus(savedOrder.getStatus());
-            response.setTotalPrice(savedOrder.getTotalPrice());
-            response.setId(savedOrder.getId());
-            response.setCreatedDate(savedOrder.getCreatedDate());
-            response.setUpdatedDate(savedOrder.getUpdatedDate());
-            response.setUserId(savedOrder.getUser().getId());
-            List<OrderItemDto> orderItemDtoList = new ArrayList<>();
-            savedOrder.getOrderItems().forEach(orderItem -> {
-                OrderItemDto orderItemDto = new OrderItemDto();
-                orderItemDto.setId(orderItem.getId());
-                orderItemDto.setProductId(orderItem.getProduct().getId());
-                orderItemDto.setPrice(orderItem.getPrice());
-                orderItemDto.setQuantity(orderItem.getQuantity());
-                orderItemDtoList.add(orderItemDto);
-            });
-            response.setOrderItems(orderItemDtoList);
-            return ResponseEntity.ok(response);
+//            Order savedOrder = orderRepository.save(order);
+//            response.setOrderUUID(savedOrder.getOrderUUID());
+//            response.setStatus(savedOrder.getStatus());
+//            response.setTotalPrice(savedOrder.getTotalPrice());
+//            response.setId(savedOrder.getId());
+//            response.setCreatedDate(savedOrder.getCreatedDate());
+//            response.setUpdatedDate(savedOrder.getUpdatedDate());
+//            response.setUserId(savedOrder.getUser().getId());
+//            List<OrderItemDto> orderItemDtoList = new ArrayList<>();
+//            savedOrder.getOrderItems().forEach(orderItem -> {
+//                OrderItemDto orderItemDto = new OrderItemDto();
+//                orderItemDto.setId(orderItem.getId());
+//                orderItemDto.setProductId(orderItem.getProduct().getId());
+//                orderItemDto.setPrice(orderItem.getPrice());
+//                orderItemDto.setQuantity(orderItem.getQuantity());
+//                orderItemDtoList.add(orderItemDto);
+//            });
+//            response.setOrderItems(orderItemDtoList);
+            return ResponseEntity.ok(orderMapper.toOrderDto(orderRepository.save(order)));
         } catch (Exception e) {
             log.error("Order creation has an error : {}", e.getMessage());
             return ResponseEntity.badRequest().build();
