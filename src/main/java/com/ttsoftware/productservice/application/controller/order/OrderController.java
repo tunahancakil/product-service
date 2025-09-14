@@ -27,7 +27,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "/createOrder", produces = APPLICATION_JSON_VALUE)
-    public OrderDto createOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
         return orderService.createOrder(orderDto);
     }
 

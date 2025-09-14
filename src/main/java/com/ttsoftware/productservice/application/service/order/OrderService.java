@@ -33,9 +33,10 @@ public class OrderService {
         return order.map(orderMapper::toOrderDto).orElse(null);
     }
 
-    public OrderDto createOrder(OrderDto orderDto) {
+    public ResponseEntity<OrderDto> createOrder(OrderDto orderDto) {
         try {
             Optional<User> user = userRepository.findById(orderDto.getUserId());
+            OrderDto response = new OrderDto();
             if (user.isEmpty()) {
                 throw new EntityNotFoundException("User not found with id: " + orderDto.getUserId());
             }
@@ -66,12 +67,28 @@ public class OrderService {
             order.setOrderItems(orderItemList);
 
             validateOrderDto(orderDto);
-            orderRepository.save(order);
-
-            return orderMapper.toOrderDto(order);
+            Order savedOrder = orderRepository.save(order);
+            response.setOrderUUID(savedOrder.getOrderUUID());
+            response.setStatus(savedOrder.getStatus());
+            response.setTotalPrice(savedOrder.getTotalPrice());
+            response.setId(savedOrder.getId());
+            response.setCreatedDate(savedOrder.getCreatedDate());
+            response.setUpdatedDate(savedOrder.getUpdatedDate());
+            response.setUserId(savedOrder.getUser().getId());
+            List<OrderItemDto> orderItemDtoList = new ArrayList<>();
+            savedOrder.getOrderItems().forEach(orderItem -> {
+                OrderItemDto orderItemDto = new OrderItemDto();
+                orderItemDto.setId(orderItem.getId());
+                orderItemDto.setProductId(orderItem.getProduct().getId());
+                orderItemDto.setPrice(orderItem.getPrice());
+                orderItemDto.setQuantity(orderItem.getQuantity());
+                orderItemDtoList.add(orderItemDto);
+            });
+            response.setOrderItems(orderItemDtoList);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Order creation has an error : {}", e.getMessage());
-            return null;
+            return ResponseEntity.badRequest().build();
         }
     }
 

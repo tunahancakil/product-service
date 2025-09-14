@@ -1,9 +1,7 @@
 package com.ttsoftware.productservice.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Generated;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -11,7 +9,8 @@ import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Where(clause = "is_deleted = 0")
