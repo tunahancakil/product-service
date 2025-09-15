@@ -20,6 +20,7 @@ public interface OrderMapper {
     @Mapping(source = "orderItems", target = "orderItems")
     OrderDto toOrderDto(Order order);
 
+    @Mapping(source = "product.name", target = "productName")
     @Mapping(source = "product.id", target = "productId")
     OrderItemDto toOrderItemDto(OrderItem orderItem);
 
