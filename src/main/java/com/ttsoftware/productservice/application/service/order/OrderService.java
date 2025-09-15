@@ -60,7 +60,7 @@ public class OrderService {
                     orderItem.setProduct(product.get());
                     orderItem.setPrice(orderItemDto.getPrice());
                     orderItem.setQuantity(orderItemDto.getQuantity());
-                    orderItem.setProductColor(orderItem.getProductColor());
+                    orderItem.setProductColor(orderItemDto.getProductColor());
                     orderItemList.add(orderItem);
                 }
             }
