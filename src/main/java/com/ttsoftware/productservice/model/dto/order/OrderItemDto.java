@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class OrderItemDto {
     private Long id;
     private Long productId;
+    private String productColor;
     private Integer quantity;
     private BigDecimal price;
 }

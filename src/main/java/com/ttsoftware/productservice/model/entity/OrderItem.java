@@ -32,6 +32,9 @@ public class OrderItem {
     @Column(name = "QUANTITY")
     private Integer quantity;
 
+    @Column(name = "PRDOUCT_COLOR")
+    private String productColor;
+
     @Column(name = "PRICE")
     private BigDecimal price;
 }
