@@ -11,6 +11,7 @@ import java.util.List;
 public class OrderDto {
     private Long id;
     private Long userId;
+    private OrderAddressDto orderAddressDto;
     private List<OrderItemDto> orderItems;
     private OrderStatusEnum status;
     private BigDecimal totalPrice;

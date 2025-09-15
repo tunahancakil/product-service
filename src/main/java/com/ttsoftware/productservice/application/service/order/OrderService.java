@@ -41,6 +41,7 @@ public class OrderService {
             }
 
             Order order = new Order();
+            order.setOrderAddress(orderMapper.toOrderAddressEntity(orderDto.getOrderAddressDto()));
             order.setUser(user.get());
             order.setOrderUUID(orderDto.getOrderUUID());
             order.setStatus(orderDto.getStatus());

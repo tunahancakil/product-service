@@ -1,45 +1,51 @@
 package com.ttsoftware.productservice.model.entity;
 
-import com.ttsoftware.productservice.model.enums.OrderStatusEnum;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ResultCheckStyle;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @Where(clause = "is_deleted = 0")
-@Table(name = "ORDERS", schema = "TOPTANCICEK")
-@SQLDelete(sql = "UPDATE orders SET is_deleted = 1 WHERE id = ?", check = ResultCheckStyle.COUNT)
-public class Order {
+@Table(name = "ORDER_ADDRESS", schema = "TOPTANCICEK")
+@SQLDelete(sql = "UPDATE ORDER_ADDRESS SET is_deleted = 1 WHERE id = ?", check = ResultCheckStyle.COUNT)
+public class OrderAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @Column(name = "EMAIL_ADDRESS")
+    private String emailAddress;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
+    @Column(name = "PHONE_NUMBER")
+    private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ORDER_ADDRESS_ID")
-    private OrderAddress orderAddress;
+    @Column(name = "FIRST_NAME")
+    private String firstName;
 
-    @Column(name = "STATUS")
-    private OrderStatusEnum status;
+    @Column(name = "LAST_NAME")
+    private String lastName;
 
-    @Column(name = "TOTAL_PRICE")
-    private BigDecimal totalPrice;
+    @Column(name = "ADDRESS")
+    private String address;
+
+    @Column(name = "CITY")
+    private String city;
+
+    @Column(name = "DISTRICT")
+    private String district;
+
+    @Column(name = "ZIP_CODE")
+    private String zipCode;
 
     @Column(name = "CREATED_DATE")
     private LocalDateTime createdDate;
@@ -49,9 +55,6 @@ public class Order {
 
     @Column(name = "IS_DELETED")
     private boolean deleted;
-
-    @Column(name = "ORDER_UUID", unique = true, nullable = false)
-    private String orderUUID;
 
     @PrePersist
     protected void onCreate() {

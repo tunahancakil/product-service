@@ -1,11 +1,11 @@
 package com.ttsoftware.productservice.application.mapper;
 
+import com.ttsoftware.productservice.model.dto.order.OrderAddressDto;
 import com.ttsoftware.productservice.model.dto.order.OrderDto;
 import com.ttsoftware.productservice.model.dto.order.OrderItemDto;
-import com.ttsoftware.productservice.model.dto.payment.PaymentDto;
 import com.ttsoftware.productservice.model.entity.Order;
+import com.ttsoftware.productservice.model.entity.OrderAddress;
 import com.ttsoftware.productservice.model.entity.OrderItem;
-import com.ttsoftware.productservice.model.entity.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,6 +18,7 @@ public interface OrderMapper {
 
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "orderItems", target = "orderItems")
+    @Mapping(source = "orderAddress", target = "orderAddressDto")
     OrderDto toOrderDto(Order order);
 
     @Mapping(source = "product.name", target = "productName")
@@ -25,4 +26,8 @@ public interface OrderMapper {
     OrderItemDto toOrderItemDto(OrderItem orderItem);
 
     List<OrderItemDto> toOrderItemDtoList(List<OrderItem> orderItems);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    OrderAddress toOrderAddressEntity(OrderAddressDto orderAddressDto);
 }

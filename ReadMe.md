@@ -1,6 +1,6 @@
 # ProductService API
 
-This project is a Spring Boot application for managing products, orders, order items, and payments.
+This project is a Spring Boot application for managing products, orders, order items.
 
 ## Requirements
 
@@ -24,12 +24,6 @@ This project is a Spring Boot application for managing products, orders, order i
 - `GET /order-items/{id}` — Get order item by ID
 - `POST /order-items` — Create a new order item
 - `DELETE /order-items/{id}` — Delete an order item
-
-### Payment
-
-- `GET /payments` — List all payments
-- `GET /payments/{id}` — Get payment by ID
-- `POST /payments` — Create a new payment
 
 ### Product
 
