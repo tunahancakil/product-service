@@ -113,11 +113,11 @@ public class OrderService {
     private void validateOrderDto(OrderDto orderDto) {
     }
 
-    public ResponseEntity<OrderDto> getOrderByEmail(String email) {
+    public ResponseEntity<List<OrderDto>> getOrderByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            Optional<Order> order  = orderRepository.findByUser(user);
-            return new ResponseEntity<>(order.map(orderMapper::toOrderDto).orElse(null), HttpStatus.OK);
+            List<Order> orderList  = orderRepository.findOrderByUser(user);
+            return new ResponseEntity<>(orderMapper.toOrderDtoList(orderList), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

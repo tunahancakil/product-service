@@ -47,7 +47,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/getOrderByEmail", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDto> getOrderByEmail(@RequestParam("email") String email) {
+    public ResponseEntity<List<OrderDto>> getOrderByEmail(@RequestParam("email") String email) {
         return orderService.getOrderByEmail(email);
     }
 
