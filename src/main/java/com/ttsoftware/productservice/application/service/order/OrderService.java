@@ -93,9 +93,14 @@ public class OrderService {
     public ResponseEntity<String> updateOrder(OrderDto orderDto) {
         try {
             Optional<Order> optionalOrder = orderRepository.findById(orderDto.getId());
-            validateOrderDto(orderDto);
-
-            return null;
+            optionalOrder.ifPresent(order -> {
+                if (!order.getStatus().equals(orderDto.getStatus())) {
+                    order.setStatus(orderDto.getStatus());
+                    order.setUpdatedDate(LocalDateTime.now());
+                    orderRepository.save(order);
+                }
+            });
+            return new ResponseEntity<>("Order is updated successfully.", HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>("Order update has an error : " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
