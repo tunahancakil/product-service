@@ -45,4 +45,10 @@ public class OrderController {
     public List<OrderDto> getAllOrders() {
         return orderService.getAllOrders();
     }
+
+    @GetMapping(value = "/getOrderByEmail", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderDto> getOrderByEmail(@RequestParam("email") String email) {
+        return orderService.getOrderByEmail(email);
+    }
+
 }
