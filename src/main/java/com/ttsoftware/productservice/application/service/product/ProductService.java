@@ -68,8 +68,8 @@ public class ProductService {
         product.setPrice(productDto.getPrice());
         productRepository.save(product);
 
-        ProductImage productImage = new ProductImage();
         productDto.getImages().forEach(imageDto -> {
+            ProductImage productImage = new ProductImage();
             productImage.setProduct(product);
             productImage.setImage(imageDto.getImage());
             productImage.setColor(imageDto.getColor());

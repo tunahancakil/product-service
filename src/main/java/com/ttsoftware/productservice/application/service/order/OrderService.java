@@ -55,14 +55,25 @@ public class OrderService {
                     Optional<Product> product = productRepository.findById(orderItemDto.getProductId());
                     if (product.isEmpty()) {
                         throw new EntityNotFoundException("Product not found with id: " + orderItemDto.getProductId());
+                    } else {
+                        Product orderProduct = product.get();
+                        if (orderProduct.getQuantity() < orderItemDto.getQuantity()) {
+                            throw new IllegalArgumentException("Insufficient stock for product id: " + orderItemDto.getProductId());
+                        }
+                        // Decrease the product quantity
+                        Integer quantity = orderProduct.getQuantity();
+                        quantity = quantity - orderItemDto.getQuantity();
+                        orderProduct.setQuantity(quantity);
+                        productRepository.save(product.get());
+
+                        OrderItem orderItem = new OrderItem();
+                        orderItem.setOrders(order);
+                        orderItem.setProduct(product.get());
+                        orderItem.setPrice(orderItemDto.getPrice());
+                        orderItem.setQuantity(orderItemDto.getQuantity());
+                        orderItem.setProductColor(orderItemDto.getProductColor());
+                        orderItemList.add(orderItem);
                     }
-                    OrderItem orderItem = new OrderItem();
-                    orderItem.setOrders(order);
-                    orderItem.setProduct(product.get());
-                    orderItem.setPrice(orderItemDto.getPrice());
-                    orderItem.setQuantity(orderItemDto.getQuantity());
-                    orderItem.setProductColor(orderItemDto.getProductColor());
-                    orderItemList.add(orderItem);
                 }
             }
             order.setOrderItems(orderItemList);
