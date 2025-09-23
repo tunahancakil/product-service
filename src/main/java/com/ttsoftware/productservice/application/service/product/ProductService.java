@@ -73,7 +73,6 @@ public class ProductService {
             productImage.setProduct(product);
             productImage.setImage(imageDto.getImage());
             productImage.setColor(imageDto.getColor());
-            productImage.setId(product.getId());
             productImageRepository.save(productImage);
         });
         Optional<Product> savedProduct  = productRepository.findById(product.getId());
