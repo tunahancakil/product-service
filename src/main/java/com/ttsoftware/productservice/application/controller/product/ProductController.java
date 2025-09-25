@@ -1,6 +1,7 @@
 package com.ttsoftware.productservice.application.controller.product;
 
 import com.ttsoftware.productservice.application.service.product.ProductService;
+import com.ttsoftware.productservice.infrastructure.request.UpdateProductRequest;
 import com.ttsoftware.productservice.infrastructure.response.product.ProductDeleteResponse;
 import com.ttsoftware.productservice.model.dto.product.ProductDto;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,10 @@ public class ProductController {
     @GetMapping(value = "/getAllProducts", produces = APPLICATION_JSON_VALUE)
     public List<ProductDto> getAllProducts() {
         return productService.getAllProducts();
+    }
+
+    @PutMapping(value = "/updateProductActive", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateProductActive(@RequestBody UpdateProductRequest request) {
+        return productService.updateProductActive(request);
     }
 }

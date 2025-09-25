@@ -1,6 +1,7 @@
 package com.ttsoftware.productservice.application.service.product;
 
 import com.ttsoftware.productservice.application.mapper.ProductMapper;
+import com.ttsoftware.productservice.infrastructure.request.UpdateProductRequest;
 import com.ttsoftware.productservice.infrastructure.response.product.ProductDeleteResponse;
 import com.ttsoftware.productservice.model.dto.product.ProductDto;
 import com.ttsoftware.productservice.model.dto.product.ProductImageDto;
@@ -163,6 +164,18 @@ public class ProductService {
 
     public List<ProductDto> getAllProducts() {
         return productMapper.toProductDtoList(productRepository.findAll());
+    }
+
+    public ResponseEntity<String> updateProductActive(UpdateProductRequest request) {
+        Optional<Product> optionalProduct = productRepository.findById(request.getId());
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            product.setActive(request.isActive());
+            productRepository.save(product);
+        } else {
+            return new ResponseEntity<>("Product is not found.", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>("Product has been active : " + request.isActive(), HttpStatus.OK);
     }
 
     private void validateProductDto(ProductDto productDto) {
