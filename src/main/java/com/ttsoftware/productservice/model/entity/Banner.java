@@ -4,14 +4,12 @@ import com.ttsoftware.productservice.model.enums.BannerLocationEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
-@Where(clause = "is_deleted = 0")
 @Table(name = "banner", schema = "TOPTANCICEK")
 public class Banner {
     @Id
