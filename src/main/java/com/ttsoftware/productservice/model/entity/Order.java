@@ -53,6 +53,9 @@ public class Order {
     @Column(name = "ORDER_UUID", unique = true, nullable = false)
     private String orderUUID;
 
+    @Column(name = "TAKE_AWAY", nullable = false)
+    private boolean takeAway;
+
     @PrePersist
     protected void onCreate() {
         createdDate = LocalDateTime.now();

@@ -48,6 +48,7 @@ public class OrderService {
             order.setTotalPrice(orderDto.getTotalPrice());
             order.setCreatedDate(LocalDateTime.now());
             order.setUpdatedDate(LocalDateTime.now());
+            order.setTakeAway(orderDto.isTakeAway());
 
             List<OrderItem> orderItemList = new ArrayList<>();
             for (OrderItemDto orderItemDto : orderDto.getOrderItems()) {

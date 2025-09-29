@@ -18,4 +18,5 @@ public class OrderDto {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private String orderUUID;
+    private boolean takeAway;
 }
